@@ -2,27 +2,31 @@
 // Support library for Testing and Mocking services.
 
 import Foundation
-import Network
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public enum AddressMockerError: Error {
 	case invalidAddress
 }
 
 public struct AddressMocker {
-	let IPv4: IPv4Address
+	let IPv4: String
+	let octets: [UInt8]
 
 	public init(usingIPv4 address: String) throws {
-		guard let address = IPv4Address(address) else {
+		self.octets = address.components(separatedBy: ".")
+			.compactMap { UInt8($0) }
+			.filter { $0 >= 0 && $0 <= 255 }
+		guard octets.count == 4 else {
 			throw AddressMockerError.invalidAddress
 		}
 		self.IPv4 = address
 	}
 
 	public var integer: UInt32 {
-		IPv4.rawValue.withUnsafeBytes { $0.load(as: UInt32.self) }
+		return // Little Endian
+			(UInt32(octets[0]) << (0*8)) |
+			(UInt32(octets[1]) << (1*8)) |
+			(UInt32(octets[2]) << (2*8)) |
+			(UInt32(octets[3]) << (3*8))
 	}
 
 	public var boolean: Bool {
