@@ -15,3 +15,5 @@ When testing services, this library becomes useful for consistently returning va
 // This will always return the same Boolean value for the IP, since it's based on a formula/hash.
 let inCPS = try AddressMocker(usingIPv4: "127.0.0.1").boolean
 ```
+
+Please refer to the [Unit Tests](https://github.com/ChildRescueCoalition/AddressMocker/blob/main/Tests/AddressMockerTests/AddressMockerTests.swift) for sample usage.
