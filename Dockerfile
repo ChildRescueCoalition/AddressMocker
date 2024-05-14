@@ -1,4 +1,4 @@
-FROM swift:5.7.3
+FROM swift:5.9
 
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
   && apt-get -q update \
